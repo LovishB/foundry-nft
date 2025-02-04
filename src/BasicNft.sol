@@ -26,7 +26,7 @@ contract BasicNft is ERC721URIStorage, Ownable {
     
     //owners can mint their collection
     function mintNFT(string memory tokenURI) external onlyOwner {
-        uint256 tokenID = s_nextTokenId++;
+        uint256 tokenID = ++s_nextTokenId;
         _safeMint(owner(), tokenID);  
         _setTokenURI(tokenID, tokenURI);
         s_tokenForSale[tokenID] = true;
@@ -55,7 +55,7 @@ contract BasicNft is ERC721URIStorage, Ownable {
         s_tokenForSale[_tokenId] = false;
 
         //transfer the value to owner
-        bool success = payable(owner()).send(msg.value);
+        (bool success, ) = payable(owner()).call{value: msg.value}("");
         if(!success) {
             revert TransferFailed(msg.sender, owner(), _tokenId);
         }

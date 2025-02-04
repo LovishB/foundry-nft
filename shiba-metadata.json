@@ -1,0 +1,31 @@
+{
+    "name": "Pixel Shiba",
+    "description": "A cute pixel art Shiba Inu dog with a happy expression, featuring the iconic cream-colored coat and pointy ears characteristic of the breed.",
+    "image": "ipfs://bafkreibfkec3ybuwxirrym2pkmn3nlrq6ng4a7zbyiegs26pw2pkl3ehxy",
+    "attributes": [
+        {
+            "trait_type": "Species",
+            "value": "Shiba Inu"
+        },
+        {
+            "trait_type": "Art Style",
+            "value": "Pixel Art"
+        },
+        {
+            "trait_type": "Color",
+            "value": "Cream"
+        },
+        {
+            "trait_type": "Expression",
+            "value": "Happy"
+        },
+        {
+            "trait_type": "Background",
+            "value": "Transparent"
+        },
+        {
+            "trait_type": "Size",
+            "value": "Small"
+        }
+    ]
+}
