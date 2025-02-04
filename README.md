@@ -1,66 +1,94 @@
-## Foundry
+# BasicNft Smart Contract
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A Solidity smart contract for creating and managing a basic NFT (Non-Fungible Token) collection with fixed-price sales functionality.
 
-Foundry consists of:
+## Features
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- ERC721 compliant NFT implementation
+- Fixed price sales mechanism
+- Minting functionality for collection owner
+- Simple buying mechanism for users
 
-## Documentation
+## Contract Overview
 
-https://book.getfoundry.sh/
+The `BasicNft` contract inherits from:
+- `ERC721URIStorage`: Provides NFT storage and metadata functionality
+- `Ownable`: Manages contract ownership and access control
 
-## Usage
+## Core Functionality
 
-### Build
+### For Collection Owner
 
-```shell
-$ forge build
-```
+1. **Minting NFTs**
+   - Function: `mintNFT(string memory tokenURI)`
+   - Only the contract owner can mint new NFTs
+   - Each NFT is automatically listed for sale upon minting
+   - Emits an `NFTMinted` event with owner address, token ID, and URI
 
-### Test
+2. **Setting NFT Price**
+   - Function: `setPrice(uint256 _nftPrice)`
+   - Allows owner to update the fixed price for all NFTs in the collection
+   - Only the contract owner can modify the price
 
-```shell
-$ forge test
-```
+3. **Receiving Payments**
+   - Automatically receives ETH when NFTs are sold
+   - Payments are instantly transferred to the owner's address
 
-### Format
+### For Buyers
 
-```shell
-$ forge fmt
-```
+1. **Purchasing NFTs**
+   - Function: `buyNFT(uint256 _tokenId)`
+   - Users can purchase available NFTs by sending the required ETH
+   - Automatically transfers both the NFT and payment
+   - Emits an `NFTSold` event upon successful purchase
 
-### Gas Snapshots
+### View Functions
 
-```shell
-$ forge snapshot
-```
+1. **Total Supply**
+   - Function: `totalSupply()`
+   - Returns the total number of NFTs minted in the collection
 
-### Anvil
+2. **Token Sale Status**
+   - Variable: `s_tokenForSale`
+   - Public mapping to check if a specific token is available for sale
 
-```shell
-$ anvil
-```
+## Error Handling
 
-### Deploy
+The contract includes custom error messages for common failure scenarios:
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+1. `TokenNotForSale`: Triggered when attempting to buy an NFT that's not for sale
+2. `InsufficientFunds`: Triggered when sent ETH is less than the NFT price
+3. `TransferFailed`: Triggered if the ETH transfer to the owner fails
 
-### Cast
+## Events
 
-```shell
-$ cast <subcommand>
-```
+1. `NFTMinted(address indexed owner, uint256 indexed tokenId, string tokenURI)`
+   - Emitted when a new NFT is minted
 
-### Help
+2. `NFTSold(address indexed seller, address indexed buyer, uint256 indexed tokenId, uint256 price)`
+   - Emitted when an NFT is successfully sold
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+## Contract Deployment
+
+When deploying the contract, you need to provide:
+1. Collection name
+2. Collection symbol
+3. Initial NFT price in wei
+
+## Security Features
+
+1. Ownership control via OpenZeppelin's `Ownable`
+2. Safe transfer mechanisms using `_safeMint`
+3. Proper access control for administrative functions
+4. Checks-Effects-Interactions pattern for ETH transfers
+
+## License
+
+This contract is licensed under MIT.
+
+## Dependencies
+
+- OpenZeppelin Contracts v4.x:
+  - ERC721
+  - ERC721URIStorage
+  - Ownable

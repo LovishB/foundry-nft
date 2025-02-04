@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import {Script} from "forge-std/Script.sol";
 import {BasicNft} from "../src/BasicNft.sol";
+import {HelperConfig} from "./HelperConfig.s.sol";
 
 contract DeployBasicNft is Script {
 
@@ -11,12 +12,13 @@ contract DeployBasicNft is Script {
     string public constant SYMBOL = "MNC";
     uint256 public constant PRICE = 0.1 ether;
 
-    function run() external returns (BasicNft) {
-        vm.startBroadcast();
+    function run() external returns (BasicNft, HelperConfig) {
+        HelperConfig helperConfig = new HelperConfig();
+        (uint256 deployerKey, ) = helperConfig.activeNetworkConfig();
+
+        vm.startBroadcast(deployerKey);
         BasicNft nft = new BasicNft(NAME, SYMBOL, PRICE);
-        // Transfer ownership to the caller
-        nft.transferOwnership(msg.sender);
         vm.stopBroadcast();
-        return nft;
+        return (nft, helperConfig);
     }
 }

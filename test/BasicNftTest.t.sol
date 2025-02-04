@@ -6,24 +6,29 @@ import {BasicNft} from "../src/BasicNft.sol";
 import {DeployBasicNft} from "../script/DeployBasicNft.s.sol";
 //We need this to receive NFts from other contracts
 import {IERC721Receiver} from "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import {HelperConfig} from "../script/HelperConfig.s.sol";
+
 
 
 contract basicNftTest is Test, IERC721Receiver {
     DeployBasicNft deployBasicNft;
     BasicNft basicNft;
+    HelperConfig helperConfig;
     address recipient;
+    address owner;
 
     function setUp() public {
         deployBasicNft = new DeployBasicNft();
-        basicNft = deployBasicNft.run();
+        (basicNft, helperConfig) = deployBasicNft.run();
         recipient = makeAddr("recipient");
+        owner = vm.addr(helperConfig.getOrCreateAnvilEthConfig().deployerKey); //getting address from helperConfig
     }
 
     function testInitialState() public view {
         assertEq(basicNft.name(), deployBasicNft.NAME());
         assertEq(basicNft.symbol(), deployBasicNft.SYMBOL());
         assertEq(basicNft.s_nftPrice(), deployBasicNft.PRICE());
-        assertEq(basicNft.owner(), address(this));
+        assertEq(basicNft.owner(), owner);
         assertEq(basicNft.totalSupply(), 0);
     }
 
@@ -34,27 +39,32 @@ contract basicNftTest is Test, IERC721Receiver {
     }
 
     function testMintNFT() public {
+        vm.prank(owner);
         basicNft.mintNFT("testURI");
         assertEq(basicNft.totalSupply(), 1);
     }
 
     function testMintNFTEvent() public {
+        vm.prank(owner);
         vm.expectEmit(true, true, false, true);
-        emit BasicNft.NFTMinted(address(this), 1, "testURI");
+        emit BasicNft.NFTMinted(owner, 1, "testURI");
         basicNft.mintNFT("testURI");
     }
 
     function testSetNFTPrice() public {
+        vm.prank(owner);
         basicNft.setPrice(0.25 ether);
         assertEq(basicNft.s_nftPrice(), 0.25 ether);
     }
 
     function testTotalSupllyAfterMinting() public {
+        vm.prank(owner);
         basicNft.mintNFT("testURI");
         assertEq(basicNft.totalSupply(), 1);
     }
 
     function testBuyNFTFailInsufficientFunds() public {
+        vm.prank(owner);
         basicNft.mintNFT("testURI");
         vm.expectRevert(
             abi.encodeWithSelector(BasicNft.InsufficientFunds.selector, 1, 0.1 ether)
@@ -63,6 +73,7 @@ contract basicNftTest is Test, IERC721Receiver {
     }
 
     function testBuyNFT() public {
+        vm.prank(owner);
         basicNft.mintNFT("testURI");
         vm.prank(recipient);
         vm.deal(recipient, 1 ether);
@@ -72,15 +83,17 @@ contract basicNftTest is Test, IERC721Receiver {
     }
 
     function testBuyNFTEmit() public {
+        vm.prank(owner);
         basicNft.mintNFT("testURI");
         vm.prank(recipient);
         vm.deal(recipient, 1 ether);
         vm.expectEmit(true, true, true, true);
-        emit BasicNft.NFTSold(address(this), recipient, 1, 0.1 ether);
+        emit BasicNft.NFTSold(owner, recipient, 1, 0.1 ether);
         basicNft.buyNFT{value: 0.1 ether}(1);
     }
 
      function testBuyNFTNotForSale() public {
+        vm.prank(owner);
         basicNft.mintNFT("testURI");
         vm.prank(recipient);
         vm.deal(recipient, 1 ether);
