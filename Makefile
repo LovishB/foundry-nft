@@ -35,3 +35,12 @@ deploy-local:
 	--rpc-url http://localhost:8545 \
 	--private-key $(DEFAULT_ANVIL_KEY) \
 	--broadcast
+
+# Deploy to Sepolia Dynamic
+deploy-dynamic-sepolia:
+	@forge script script/DeployMoodDynamicNft.s.sol:DeployMoodDynamicNft \
+	--rpc-url $(SEPOLIA_RPC_URL) \
+	--private-key $(PRIVATE_KEY) \
+	--broadcast \
+	--verify \
+	-vvvv
