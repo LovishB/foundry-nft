@@ -9,6 +9,9 @@ A Solidity smart contract for creating and managing a basic NFT (Non-Fungible To
 - Minting functionality for collection owner
 - Simple buying mechanism for users
 
+## Architecture Overview
+![Architecture](./diagram.svg)
+
 ## Contract Overview
 
 The `BasicNft` contract inherits from:
