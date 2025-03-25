@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650">
+  <!-- Background -->
+  <rect width="900" height="650" fill="#f8f9fa" />
+  
+  <!-- Title -->
+  <text x="450" y="40" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle">NFT Contracts Architecture</text>
+  
+  <!-- OpenZeppelin Libraries -->
+  <g>
+    <rect x="300" y="80" width="300" height="100" rx="5" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2" />
+    <text x="450" y="110" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle">OpenZeppelin Libraries</text>
+    
+    <rect x="320" y="130" width="80" height="30" rx="3" fill="#c5cae9" stroke="#3f51b5" stroke-width="1" />
+    <text x="360" y="150" font-family="Arial" font-size="12" text-anchor="middle">ERC721</text>
+    
+    <rect x="410" y="130" width="130" height="30" rx="3" fill="#c5cae9" stroke="#3f51b5" stroke-width="1" />
+    <text x="475" y="150" font-family="Arial" font-size="12" text-anchor="middle">ERC721URIStorage</text>
+    
+    <rect x="550" y="130" width="80" height="30" rx="3" fill="#c5cae9" stroke="#3f51b5" stroke-width="1" />
+    <text x="590" y="150" font-family="Arial" font-size="12" text-anchor="middle">Ownable</text>
+    
+
+  </g>
+  
+  <!-- BasicNft Contract -->
+  <g>
+    <rect x="100" y="240" width="300" height="330" rx="5" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" />
+    <text x="250" y="270" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle">BasicNft</text>
+    <text x="250" y="290" font-family="Arial" font-size="12" font-style="italic" text-anchor="middle">ERC721URIStorage, Ownable</text>
+    
+    <rect x="120" y="310" width="260" height="100" rx="3" fill="#ffffff" stroke="#1565c0" stroke-width="1" />
+    <text x="130" y="330" font-family="Arial" font-size="14">State Variables:</text>
+    <text x="140" y="350" font-family="Arial" font-size="12">- s_nextTokenId</text>
+    <text x="140" y="370" font-family="Arial" font-size="12">- s_nftPrice</text>
+    <text x="140" y="390" font-family="Arial" font-size="12">- s_tokenForSale mapping</text>
+    
+    <rect x="120" y="420" width="260" height="130" rx="3" fill="#ffffff" stroke="#1565c0" stroke-width="1" />
+    <text x="130" y="440" font-family="Arial" font-size="14">Key Functions:</text>
+    <text x="140" y="460" font-family="Arial" font-size="12">- mintNFT(string tokenURI)</text>
+    <text x="140" y="480" font-family="Arial" font-size="12">- setPrice(uint256 _nftPrice)</text>
+    <text x="140" y="500" font-family="Arial" font-size="12">- totalSupply()</text>
+    <text x="140" y="520" font-family="Arial" font-size="12">- buyNFT(uint256 _tokenId)</text>
+  </g>
+  
+  <!-- MoodDynamicNft Contract -->
+  <g>
+    <rect x="500" y="240" width="300" height="330" rx="5" fill="#fff8e1" stroke="#ff8f00" stroke-width="2" />
+    <text x="650" y="270" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle">MoodDynamicNft</text>
+    <text x="650" y="290" font-family="Arial" font-size="12" font-style="italic" text-anchor="middle">ERC721URIStorage, Ownable</text>
+    
+    <rect x="520" y="310" width="260" height="120" rx="3" fill="#ffffff" stroke="#ff8f00" stroke-width="1" />
+    <text x="530" y="330" font-family="Arial" font-size="14">State Variables:</text>
+    <text x="540" y="350" font-family="Arial" font-size="12">- enum Mood { HAPPY, SAD }</text>
+    <text x="540" y="370" font-family="Arial" font-size="12">- s_happySvg</text>
+    <text x="540" y="390" font-family="Arial" font-size="12">- s_sadSvg</text>
+    <text x="540" y="410" font-family="Arial" font-size="12">- s_currentMood</text>
+    
+    <rect x="520" y="440" width="260" height="110" rx="3" fill="#ffffff" stroke="#ff8f00" stroke-width="1" />
+    <text x="530" y="460" font-family="Arial" font-size="14">Key Functions:</text>
+    <text x="540" y="480" font-family="Arial" font-size="12">- tokenURI(uint256) override</text>
+    <text x="540" y="500" font-family="Arial" font-size="12">- flipMood()</text>
+    <text x="540" y="520" font-family="Arial" font-size="12">- updateSvgs(string, string)</text>
+    <text x="540" y="540" font-family="Arial" font-size="12">- getCurrentMood()</text>
+  </g>
+  
+  <!-- Inheritance Arrows -->
+  <!-- ERC721 to contracts -->
+  <path d="M360 180 L250 240" stroke="#3f51b5" stroke-width="1.5" fill="none" stroke-dasharray="5,5" />
+  <path d="M475 180 L250 240" stroke="#3f51b5" stroke-width="1.5" fill="none" stroke-dasharray="5,5" />
+  <path d="M590 180 L250 240" stroke="#3f51b5" stroke-width="1.5" fill="none" stroke-dasharray="5,5" />
+  
+  <path d="M360 180 L650 240" stroke="#3f51b5" stroke-width="1.5" fill="none" stroke-dasharray="5,5" />
+  <path d="M475 180 L650 240" stroke="#3f51b5" stroke-width="1.5" fill="none" stroke-dasharray="5,5" />
+  <path d="M590 180 L650 240" stroke="#3f51b5" stroke-width="1.5" fill="none" stroke-dasharray="5,5" />
+
+  
+  <!-- Features section -->
+  <g>
+    <rect x="100" y="580" width="300" height="50" rx="5" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1" />
+    <text x="250" y="610" font-family="Arial" font-size="14" text-anchor="middle">Static NFT with marketplace functionality</text>
+  </g>
+  
+  <g>
+    <rect x="500" y="580" width="300" height="50" rx="5" fill="#fff3e0" stroke="#e65100" stroke-width="1" />
+    <text x="650" y="610" font-family="Arial" font-size="14" text-anchor="middle">Dynamic NFT with on-chain metadata</text>
+  </g>
+  
+  <!-- Connect Features to contracts -->
+  <line x1="250" y1="570" x2="250" y2="580" stroke="#2e7d32" stroke-width="1.5" />
+  <line x1="650" y1="570" x2="650" y2="580" stroke="#e65100" stroke-width="1.5" />
+  
+
+</svg>
